@@ -4,15 +4,13 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"image/draw"
 	"math"
 
-	"github.com/BurntSushi/graphics-go/graphics"
 	"github.com/jezek/xgb/xproto"
-
 	"github.com/jezek/xgbutil"
 	"github.com/jezek/xgbutil/ewmh"
 	"github.com/jezek/xgbutil/icccm"
+	"golang.org/x/image/draw"
 )
 
 /*
@@ -23,7 +21,7 @@ are not specific to xgraphics.Image.
 // Scale is a simple wrapper around graphics.Scale.
 func Scale(img image.Image, width, height int) draw.Image {
 	dimg := image.NewRGBA(image.Rect(0, 0, width, height))
-	graphics.Scale(dimg, img)
+	draw.ApproxBiLinear.Scale(dimg, dimg.Bounds(), img, img.Bounds(), draw.Src, nil)
 
 	return dimg
 }
