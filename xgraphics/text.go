@@ -8,6 +8,8 @@ import (
 
 	"github.com/BurntSushi/freetype-go/freetype"
 	"github.com/BurntSushi/freetype-go/freetype/truetype"
+	"golang.org/x/image/font"
+	"golang.org/x/image/math/fixed"
 )
 
 // Text takes an image and, using the freetype package, writes text in the
@@ -20,26 +22,20 @@ import (
 //
 // If you need more control over the 'context' used to draw text (like the DPI),
 // then you'll need to ignore this convenience method and use your own.
-func (im *Image) Text(x, y int, clr color.Color, fontSize float64,
-	font *truetype.Font, text string) (int, int, error) {
-
+func (im *Image) Text(position fixed.Point26_6, clr color.Color, fontFace font.Face, text string) fixed.Point26_6 {
 	// Create a solid color image
 	textClr := image.NewUniform(clr)
 
-	// Set up the freetype context... mostly boiler plate
-	c := ftContext(font, fontSize)
-	c.SetClip(im.Bounds())
-	c.SetDst(im)
-	c.SetSrc(textClr)
-
-	// Now let's actually draw the text...
-	pt := freetype.Pt(x, y+int(c.PointToFix32(fontSize)>>8))
-	newpt, err := c.DrawString(text, pt)
-	if err != nil {
-		return 0, 0, err
+	fontMetrics := fontFace.Metrics()
+	drawer := font.Drawer{
+		Dst:  im,
+		Src:  textClr,
+		Face: fontFace,
+		Dot:  position.Add(fixed.Point26_6{X: 0, Y: fontMetrics.Height - fixed.I(fontMetrics.CaretSlope.Y*2)}),
 	}
+	drawer.DrawString(text)
 
-	return int(newpt.X / 256), int(newpt.Y / 256), nil
+	return drawer.Dot
 }
 
 // Extents returns the *correct* max width and height extents of a string
