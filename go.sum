@@ -1,7 +1,5 @@
 github.com/jezek/xgb v1.1.0 h1:wnpxJzP1+rkbGclEkmwpVFQWpuE2PUGNUzP8SbfFobk=
 github.com/jezek/xgb v1.1.0/go.mod h1:nrhwO0FX/enq75I7Y7G8iN1ubpSGZEiA3v9e9GyRFlk=
-github.com/jezek/xgbutil v0.0.0-20210302171758-530099784e66 h1:+wPhoJD8EH0/bXipIq8Lc2z477jfox9zkXPCJdhvHj8=
-github.com/jezek/xgbutil v0.0.0-20210302171758-530099784e66/go.mod h1:KACeV+k6b+aoLTVrrurywEbu3UpqoQcQywj4qX8aQKM=
 github.com/yuin/goldmark v1.4.13/go.mod h1:6yULJ656Px+3vBD8DxQVa3kxgyrAnzto9xy5taEt/CY=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20210921155107-089bfa567519/go.mod h1:GvvjBRRGRdwPK5ydBHafDWAxML/pGHZbMvKqRZ5+Abc=
