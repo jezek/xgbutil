@@ -29,11 +29,10 @@ import (
 	"io"
 	"os"
 
-	"github.com/BurntSushi/graphics-go/graphics"
 	"github.com/jezek/xgb/xproto"
-
 	"github.com/jezek/xgbutil"
 	"github.com/jezek/xgbutil/xwindow"
+	"golang.org/x/image/draw"
 )
 
 // Model for the BGRA color type.
@@ -111,7 +110,7 @@ func (im *Image) Destroy() {
 // be called again.)
 func (im *Image) Scale(width, height int) *Image {
 	dimg := New(im.X, image.Rect(0, 0, width, height))
-	graphics.Scale(dimg, im)
+	draw.ApproxBiLinear.Scale(dimg, dimg.Bounds(), im, im.Bounds(), draw.Src, nil)
 	im.Destroy()
 
 	return dimg
