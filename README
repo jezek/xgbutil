@@ -58,3 +58,4 @@ xpybutil project URL: https://github.com/BurntSushi/xpybutil
 jezek's Fork
 ============
 Why I've forked the xgbutil repository from BurntSushi's github is discussed in [issue #2](https://github.com/jezek/xgb/issues/2).
+I've also changed the LICENSE to GNU GPL v3 to meet the requirements for pkg.go.dev
