@@ -247,9 +247,9 @@ func readDrawableData(X *xgbutil.XUtil, ximg *Image, did xproto.Drawable,
 				}
 			}
 		}
-	case 24, 32:
+	case 24:
 		switch format.BitsPerPixel {
-		case 24:
+		case 24, 32:
 			bytesPer := int(format.BitsPerPixel) / 8
 			var i int
 			ximg.For(func(x, y int) BGRA {
@@ -261,6 +261,13 @@ func readDrawableData(X *xgbutil.XUtil, ximg *Image, did xproto.Drawable,
 					A: 0xff,
 				}
 			})
+		default:
+			return fmt.Errorf("The image returned for pixmap id %d with "+
+				"depth %d has an unsupported value for bits-per-pixel: %d",
+				did, format.Depth, format.BitsPerPixel)
+		}
+	case 32:
+		switch format.BitsPerPixel {
 		case 32:
 			bytesPer := int(format.BitsPerPixel) / 8
 			var i int
@@ -274,9 +281,9 @@ func readDrawableData(X *xgbutil.XUtil, ximg *Image, did xproto.Drawable,
 				}
 			})
 		default:
-			return fmt.Errorf("The image returned for pixmap id %d has "+
-				"an unsupported value for bits-per-pixel: %d",
-				did, format.BitsPerPixel)
+			return fmt.Errorf("The image returned for pixmap id %d with "+
+				"depth %d has an unsupported value for bits-per-pixel: %d",
+				did, format.Depth, format.BitsPerPixel)
 		}
 
 	default:
