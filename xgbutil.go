@@ -1,11 +1,13 @@
 package xgbutil
 
 import (
+	"errors"
 	"log"
 	"os"
 	"sync"
 
 	"github.com/jezek/xgb"
+	"github.com/jezek/xgb/xcmisc"
 	"github.com/jezek/xgb/xinerama"
 	"github.com/jezek/xgb/xproto"
 )
@@ -270,6 +272,19 @@ func NewConnXgb(c *xgb.Conn) (*XUtil, error) {
 		Logger.Printf("WARNING: %s\n", err)
 		Logger.Printf("MESSAGE: The 'xinerama' package cannot be used " +
 			"because the XINERAMA extension could not be loaded.")
+	}
+
+	// initialise the XCMisc extension for ID re-use - if successful then hook in to xgb.
+	err = xcmisc.Init(c)
+	if err == nil {
+		xu.conn.SetIDRangeFunc(func(c *xgb.Conn) (uint32, uint32, error) {
+			idRange, err := xcmisc.GetXIDRange(c).Reply()
+			if err != nil || (idRange.StartId == 0 && idRange.Count == 1) { // that range is out of XID
+				return 0, 1, errors.New("no more IDs available@")
+			}
+
+			return idRange.StartId, idRange.Count, nil
+		})
 	}
 
 	return xu, nil
